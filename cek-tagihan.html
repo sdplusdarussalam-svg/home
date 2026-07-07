@@ -40,7 +40,11 @@
                     if (namaIbuDiDb === ibuInput) {
                         hasilDiv.classList.remove('hidden');
                         
-                        // Logika untuk menampilkan rekening hanya jika status BUKAN "Lunas"
+                        // Menentukan warna dan gaya teks berdasarkan status
+                        let statusTeks = d.status || '-';
+                        let statusWarna = statusTeks.toLowerCase() === "lunas" ? "text-green-600" : "text-red-600";
+                        let statusDisplay = `<span class="font-bold ${statusWarna}">${statusTeks}</span>`;
+
                         let infoRekening = "";
                         if (d.status.toLowerCase() !== "lunas") {
                             infoRekening = `
@@ -58,7 +62,7 @@
 
                         hasilDiv.innerHTML = `
                             <p><strong>Nama:</strong> ${d.nama || '-'}</p>
-                            <p><strong>Status:</strong> ${d.status || '-'}</p>
+                            <p><strong>Status:</strong> ${statusDisplay}</p>
                             <p><strong>Keterangan:</strong> ${d.keterangan || '-'}</p>
                             <p><strong>Jumlah:</strong> ${d.jumlah || '-'}</p>
                             ${infoRekening}
