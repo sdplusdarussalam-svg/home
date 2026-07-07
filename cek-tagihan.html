@@ -25,14 +25,16 @@
             const hasilDiv = document.getElementById('hasil-tagihan');
             hasilDiv.classList.add('hidden');
 
-            if (!nisn) { alert("Masukkan NISN!"); return; }
+            if (!nisn || !ibuInput) {
+                alert("Mohon isi NISN dan Nama Ibu Kandung!");
+                return;
+            }
 
             try {
                 const docSnap = await getDoc(doc(db, "siswa", nisn));
 
                 if (docSnap.exists()) {
                     const d = docSnap.data();
-                    // Kita ambil field namaIbu, trim spasi, lalu jadikan huruf besar
                     const namaIbuDiDb = d.namaIbu ? d.namaIbu.trim().toUpperCase() : "";
 
                     if (namaIbuDiDb === ibuInput) {
@@ -44,15 +46,16 @@
                             <p><strong>Jumlah:</strong> ${d.jumlah || '-'}</p>
                         `;
                     } else {
-                        // Jika tidak cocok, pesan ini akan muncul dan memberi tahu apa yang salah
-                        alert("Tidak cocok! \nInput Anda: " + ibuInput + "\nData di DB: " + namaIbuDiDb);
+                        // Pop-up jika nama ibu salah
+                        alert("Nama Ibu Kandung tidak cocok!");
                     }
                 } else {
-                    alert("NISN tidak ditemukan.");
+                    // Pop-up jika NISN tidak ditemukan
+                    alert("NISN tidak ditemukan di database!");
                 }
             } catch (e) { 
                 console.error(e);
-                alert("Error: " + e.message); 
+                alert("Terjadi kesalahan koneksi ke server."); 
             }
         }
     </script>
