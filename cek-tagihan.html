@@ -7,7 +7,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-        // Konfigurasi Firebase Anda
         const firebaseConfig = { 
             apiKey: "AIzaSyAaMqHz_QvEpN_d-ns7vblfMs1EWZ6PJEk",
             authDomain: "tagihan-siswa-1f2df.firebaseapp.com",
@@ -24,20 +23,17 @@
             const nisn = document.getElementById('nisn-input').value.trim();
             const ibuInput = document.getElementById('ibu-input').value.trim().toUpperCase();
             const hasilDiv = document.getElementById('hasil-tagihan');
-            hasilDiv.classList.add('hidden'); // Sembunyikan hasil lama
+            hasilDiv.classList.add('hidden');
 
-            if (!nisn) {
-                alert("Masukkan NISN!");
-                return;
-            }
+            if (!nisn) { alert("Masukkan NISN!"); return; }
 
             try {
                 const docSnap = await getDoc(doc(db, "siswa", nisn));
 
                 if (docSnap.exists()) {
                     const d = docSnap.data();
-                    // Pengecekan aman: jika namaIbu tidak ada, dianggap string kosong
-                    const namaIbuDiDb = d.namaIbu ? d.namaIbu.toUpperCase() : "";
+                    // Kita ambil field namaIbu, trim spasi, lalu jadikan huruf besar
+                    const namaIbuDiDb = d.namaIbu ? d.namaIbu.trim().toUpperCase() : "";
 
                     if (namaIbuDiDb === ibuInput) {
                         hasilDiv.classList.remove('hidden');
@@ -48,14 +44,15 @@
                             <p><strong>Jumlah:</strong> ${d.jumlah || '-'}</p>
                         `;
                     } else {
-                        alert("Nama Ibu Kandung tidak cocok!");
+                        // Jika tidak cocok, pesan ini akan muncul dan memberi tahu apa yang salah
+                        alert("Tidak cocok! \nInput Anda: " + ibuInput + "\nData di DB: " + namaIbuDiDb);
                     }
                 } else {
-                    alert("NISN tidak ditemukan di database.");
+                    alert("NISN tidak ditemukan.");
                 }
             } catch (e) { 
                 console.error(e);
-                alert("Terjadi kesalahan koneksi."); 
+                alert("Error: " + e.message); 
             }
         }
     </script>
@@ -67,9 +64,7 @@
         <input type="text" id="ibu-input" placeholder="Nama Ibu Kandung" class="w-full p-2 border rounded mb-4">
         <button onclick="cariTagihan()" class="w-full bg-blue-800 text-white p-2 rounded font-bold hover:bg-blue-700">Cari Tagihan</button>
         
-        <div id="hasil-tagihan" class="mt-6 hidden p-4 bg-gray-50 border-l-4 border-blue-800 rounded">
-            <!-- Hasil akan muncul di sini -->
-        </div>
+        <div id="hasil-tagihan" class="mt-6 hidden p-4 bg-gray-50 border-l-4 border-blue-800 rounded"></div>
         
         <a href="index.html" class="block text-center mt-6 text-blue-600 underline">← Kembali ke Beranda</a>
     </div>
