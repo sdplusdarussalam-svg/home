@@ -2,6 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD Plus Darussalam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -13,7 +15,7 @@
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between">
     <nav class="bg-blue-800 text-white p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -23,25 +25,44 @@
         </div>
     </nav>
 
-    <main class="container mx-auto py-8 px-4 flex flex-col md:flex-row gap-6">
+    <main class="container mx-auto py-8 px-4 flex flex-col md:flex-row gap-6 flex-grow">
         <aside class="w-full md:w-1/4">
             <h2 class="text-xl font-bold mb-4 border-b-2 border-gray-400 pb-2">MENU</h2>
-            <div id="menu-container" class="bg-white/80 p-4 rounded shadow space-y-2"></div>
+            <div id="menu-container" class="bg-white/80 p-4 rounded shadow space-y-2 max-h-[75vh] overflow-y-auto"></div>
         </aside>
 
-       <!-- Bagian Berita Terbaru, perhatikan tambahan tag <img> -->
-<section class="w-full md:w-2/4">
-    <h2 class="text-2xl font-bold mb-4 border-b-2 border-blue-800 pb-2">Berita Terbaru</h2>
-    <div class="bg-white/90 p-4 rounded shadow">
-        <!-- Tambahkan foto di sini -->
-        <img src="Berita-jpg.jpg" alt="Foto Berita" class="w-full h-48 object-cover rounded mb-4">
-        
-        <h3 class="text-xl font-bold">Pembangunan SD Plus Darussalam</h3>
-        <p id="konten-pendek" class="text-gray-600 mt-2">SD Plus Darussalam sedang melakukan pengembangan fasilitas...</p>
-        <div id="konten-lengkap" class="hidden text-gray-600 mt-2">Detail pembangunan gedung baru...</div>
-        <button onclick="toggleBerita()" id="btn-baca" class="text-blue-600 font-bold mt-4 block">Baca Selengkapnya →</button>
-    </div>
-</section>
+        <section class="w-full md:w-2/4">
+            <h2 class="text-2xl font-bold mb-4 border-b-2 border-blue-800 pb-2">Berita Terbaru</h2>
+            <div class="bg-white/90 p-4 rounded shadow">
+                <img src="Berita-1.jpg" alt="Foto Berita" class="w-full h-48 object-cover rounded mb-4">
+                
+                <h3 class="text-xl font-bold">Pembangunan SD Plus Darussalam kampus 2</h3>
+                <p id="konten-pendek" class="text-gray-600 mt-2">SD Plus Darussalam sedang melakukan pembangunan kampus 2</p>
+                <div id="konten-lengkap" class="hidden text-gray-600 mt-2">**Pembangunan SD Plus Darussalam Kampus 2 Masuki Tahap Pondasi, Donasi Masih Dibuka untuk Umum**
+
+Ngawi – Pembangunan **SD Plus Darussalam Kampus 2** terus menunjukkan progres yang positif. Saat ini, proses pembangunan telah memasuki tahap pondasi, yang menjadi langkah awal penting dalam mewujudkan fasilitas pendidikan yang representatif dan berkualitas bagi masyarakat.
+
+Tahap pondasi merupakan bagian vital dalam pembangunan sebuah gedung, karena menjadi dasar kekuatan struktur bangunan ke depan. Dengan dimulainya tahap ini, harapan besar semakin dekat untuk menghadirkan lingkungan belajar yang nyaman, aman, dan mendukung perkembangan akademik maupun karakter siswa.
+
+SD Plus Darussalam Kampus 2 dirancang sebagai pengembangan dari lembaga pendidikan yang telah ada, dengan tujuan memperluas akses pendidikan Islami yang unggul dan berkarakter. Ke depan, sekolah ini diharapkan mampu menjadi pusat pendidikan yang mencetak generasi berilmu, berakhlak mulia, serta siap menghadapi tantangan zaman.
+
+Meski pembangunan telah berjalan, panitia masih membuka kesempatan bagi para dermawan dan masyarakat luas untuk turut berpartisipasi dalam bentuk donasi. Dukungan dari berbagai pihak sangat dibutuhkan agar proses pembangunan dapat berjalan lancar hingga selesai.
+
+Setiap donasi yang diberikan tidak hanya menjadi kontribusi nyata dalam pembangunan fisik, tetapi juga menjadi amal jariyah yang pahalanya terus mengalir.
+
+Bagi yang ingin berpartisipasi dalam pembangunan SD Plus Darussalam Kampus 2, donasi dapat disalurkan melalui:
+
+**WhatsApp:** +62 852-1010-0165
+**a/n:** Havidz Fuaddin Al Kolidi
+
+Mari bersama-sama berkontribusi dalam membangun generasi masa depan melalui pendidikan yang lebih baik. Semoga setiap langkah kebaikan ini membawa manfaat yang luas bagi umat.
+</div>
+                
+                <button onclick="toggleBerita()" id="btn-baca" class="text-blue-600 font-bold mt-4 block hover:text-blue-800 transition-colors">
+                    Baca Selengkapnya →
+                </button>
+            </div>
+        </section>
 
         <aside class="w-full md:w-1/4">
             <h2 class="text-2xl font-bold mb-4 border-b-2 border-yellow-500 pb-2">Pengumuman</h2>
@@ -56,30 +77,133 @@
 
     <script>
         const menuData = [
-            { nama: "Layanan Siswa", sub: [{ nama: "Cek Tagihan", link: "cek-tagihan.html" }] },
-            { nama: "Capaian", sub: [{ nama: "Capaian Tahfidz", link: "https://bit.ly/hafalan-siswa" }] }
+            {
+                nama: "PROFIL",
+                sub: [
+                    { nama: "Sejarah (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Kurikulum", link: "https://bit.ly/profil-sdpd-2025", eksternal: true }
+                ]
+            },
+            {
+                nama: "LAYANAN SISWA",
+                sub: [
+                    { nama: "Cek Tagihan", link: "cek-tagihan.html", eksternal: false }
+                ]
+            },
+            {
+                nama: "PROGRAM",
+                sub: [
+                    { nama: "Jadwal Pelajaran (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Ekstrakurikuler", link: "https://bit.ly/m/sdpd-ekstra", eksternal: true },
+                    { nama: "Kalender Kegiatan", link: "https://bit.ly/kegiatan-1tahun", eksternal: true }
+                ]
+            },
+            {
+                nama: "MEDIA",
+                sub: [
+                    { nama: "Ibadah Yaumiyah - Wudhu (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Ibadah Yaumiyah - Sholat (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Ibadah Yaumiyah - Dzikir Ba'da Salam (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Ibadah Yaumiyah - Dzikir Pagi", link: "https://youtube.com/playlist?list=PLu6HscRiyP5DeyRanoURKD0bx22BPeUxu&si=VG1a7H4xzjtl_Y7y", eksternal: true },
+                    { nama: "Ibadah Yaumiyah - Asmaul Husna (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Tahsin An Nuur - Buku Jilid", link: "https://bit.ly/BUKUANNUR", eksternal: true },
+                    { nama: "Tahsin An Nuur - Video Jilid 1", link: "https://youtube.com/playlist?list=PLu6HscRiyP5Cba7L3r1WyrfyHun5yGRs&si=QYVw3ACwtDtE2vzE", eksternal: true },
+                    { nama: "Tahsin An Nuur - Video Jilid 2", link: "https://youtube.com/playlist?list=PLu6HscRiyP5B90-8hhIFB_vvaBLohinNR&si=j23TdL_ZCsJjUlB", eksternal: true },
+                    { nama: "Tahsin An Nuur - Video Jilid 3", link: "https://youtube.com/playlist?list=PLu6HscRiyP5CD-BnGZrCgKZDmupk2MU9I&si=3svqYDy9Q0XZOPBN", eksternal: true },
+                    { nama: "Tahfidz An Nuur - Juz 30", link: "https://youtube.com/playlist?list=PLu6HscRiyP5BH_HbhVWfWqar9KARhwwz5&si=pOrbB5ItIo2u91z", eksternal: true },
+                    { nama: "Tahfidz An Nuur - Juz 29", link: "https://youtube.com/playlist?list=PLu6HscRiyP5CfjhsGFEtBMTGffIgw3xS&si=apY6yq1xwkJqGQLq", eksternal: true },
+                    { nama: "Tahsin Jiharka (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Tahfidz Jiharka", link: "https://drive.google.com/drive/folders/1RciYtS8kQx8rm0ws0_iNZqi4mXRyzqqZ?usp=sharing", eksternal: true },
+                    { nama: "Do'a Yaumiyah (Menyusul)", link: "#", eksternal: false },
+                    { nama: "Hadits Pilihan (Menyusul)", link: "#", eksternal: false }
+                ]
+            },
+            {
+                nama: "PERPUSTAKAAN",
+                sub: [
+                    { nama: "Perpustakaan (Diva)", link: "#", eksternal: false }
+                ]
+            },
+            {
+                nama: "CAPAIAN",
+                sub: [
+                    { nama: "Tahfidz", link: "https://bit.ly/hafalan-siswa", eksternal: true },
+                    { nama: "Prestasi", link: "https://bit.ly/capaian-prestasi", eksternal: true },
+                    { nama: "Tinggi Badan", link: "https://bit.ly/tinggi-siswa", eksternal: true },
+                    { nama: "Poin Kedisiplinan", link: "https://bit.ly/BUKU-BK-SDPD", eksternal: true }
+                ]
+            },
+            {
+                nama: "ARSIP",
+                sub: [
+                    { nama: "Worksheet", link: "https://bit.ly/worksheet-sdpd", eksternal: true },
+                    { nama: "Ulhar", link: "https://bit.ly/soal-harian", eksternal: true },
+                    { nama: "STS", link: "https://bit.ly/sts-sdpd", eksternal: true },
+                    { nama: "SAS (Menyusul)", link: "#", eksternal: false }
+                ]
+            },
+            {
+                nama: "ADMINISTRASI",
+                sub: [
+                    { nama: "WA Autorespon: 085210100175", link: "https://wa.me/6285210100175", eksternal: true },
+                    { nama: "Transfer BRI: 6440 0103 6276 532", link: "#", eksternal: false },
+                    { nama: "Transfer Jatim: 180 2000 908", link: "#", eksternal: false }
+                ]
+            },
+            {
+                nama: "MEDSOS",
+                sub: [
+                    { nama: "YouTube: Darussalamberkah", link: "#", eksternal: false },
+                    { nama: "Facebook", link: "#", eksternal: false },
+                    { nama: "Instagram", link: "#", eksternal: false }
+                ]
+            }
         ];
 
         const container = document.getElementById('menu-container');
+        
         menuData.forEach((item, index) => {
             const menuDiv = document.createElement('div');
+            menuDiv.className = "border-b border-gray-100 last:border-none pb-2 last:pb-0";
             menuDiv.innerHTML = `
-                <button onclick="toggleMenu(${index})" class="w-full text-left font-bold text-blue-800 hover:text-blue-600 flex justify-between">
-                    ${item.nama} <span>▼</span>
+                <button onclick="toggleMenu(${index})" class="w-full text-left font-bold text-blue-800 hover:text-blue-600 flex justify-between items-center py-1 text-sm tracking-wide">
+                    <span>${item.nama}</span> <span id="arrow-${index}" class="text-xs transition-transform duration-200">▼</span>
                 </button>
-                <ul id="sub-${index}" class="hidden pl-4 mt-1 space-y-1 border-l-2 border-blue-200">
-                    ${item.sub.map(sub => `<li><a href="${sub.link}" class="text-gray-700 hover:text-blue-700 text-sm block">${sub.nama}</a></li>`).join('')}
+                <ul id="sub-${index}" class="hidden pl-3 mt-1 space-y-1 border-l-2 border-blue-200">
+                    ${item.sub.map(sub => `
+                        <li>
+                            <a href="${sub.link}" 
+                               ${sub.eksternal ? 'target="_blank" rel="noopener noreferrer"' : ''} 
+                               class="text-gray-700 hover:text-blue-700 text-xs block py-1 break-words">
+                               ${sub.nama} ${sub.eksternal && sub.link !== '#' ? '↗' : ''}
+                            </a>
+                        </li>
+                    `).join('')}
                 </ul>
             `;
             container.appendChild(menuDiv);
         });
 
-        function toggleMenu(index) { document.getElementById(`sub-${index}`).classList.toggle('hidden'); }
+        function toggleMenu(index) {
+            const subMenu = document.getElementById(`sub-${index}`);
+            const arrow = document.getElementById(`arrow-${index}`);
+            const isHidden = subMenu.classList.toggle('hidden');
+            arrow.textContent = isHidden ? '▼' : '▲';
+        }
+
         function toggleBerita() {
             const lengkap = document.getElementById('konten-lengkap');
             const pendek = document.getElementById('konten-pendek');
+            const btn = document.getElementById('btn-baca');
+            
             lengkap.classList.toggle('hidden');
             pendek.classList.toggle('hidden');
+            
+            if (lengkap.classList.contains('hidden')) {
+                btn.innerHTML = "Baca Selengkapnya →";
+            } else {
+                btn.innerHTML = "Sembunyikan ←";
+            }
         }
     </script>
 </body>
