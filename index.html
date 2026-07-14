@@ -273,17 +273,50 @@ function renderPengumuman(data) {
     const containerPengumuman = document.getElementById('pengumuman-container');
     containerPengumuman.innerHTML = `<h2 class="text-lg font-bold mb-3 text-gray-800 border-b-2 border-yellow-500 pb-2 uppercase tracking-wider">Pengumuman</h2>`;
 
-    if (data.length === 0 || !data[0].judul) {
+    // Ambil baris yang benar-benar ada judulnya saja
+    const dataValid = data.filter(p => p.judul && p.judul.toString().trim() !== "");
+
+    if (dataValid.length === 0) {
         containerPengumuman.innerHTML += `<p class="text-gray-500 text-sm py-2">Tidak ada pengumuman baru.</p>`;
         return;
     }
 
-    data.reverse().forEach(p => {
+    // Fungsi pembantu untuk merapikan format tanggal
+    function rapikanTanggal(tgl) {
+        if (!tgl) return '';
+        
+        const stringTgl = String(tgl).trim();
+        
+        // Jika formatnya bawaan Google Sheets seperti "Date(2026,6,13)" atau "Date(2026,5,20)"
+        if (stringTgl.startsWith('Date(')) {
+            try {
+                // Ambil angka di dalam kurung, contoh: [2026, 6, 13]
+                const bagian = stringTgl.match(/\(([^)]+)\)/)[1].split(',');
+                const tahun = parseInt(bagian[0]);
+                // Di javascript Date, bulan dimulai dari index 0 (Januari = 0, Juni = 5)
+                const bulan = parseInt(bagian[1]); 
+                const hari = parseInt(bagian[2]);
+                
+                const namaBulan = [
+                    "Januari", "Februari", "Maret", "April", "Mei", "Juni", 
+                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                ];
+                
+                return `${hari} ${namaBulan[bulan]} ${tahun}`;
+            } catch (e) {
+                return stringTgl; // Jika gagal parsing, kembalikan teks aslinya
+            }
+        }
+        return stringTgl;
+    }
+
+    [...dataValid].reverse().forEach(p => {
+        const tanggalRapi = rapikanTanggal(p.tanggal);
         const itemHtml = `
             <div class="bg-yellow-50/50 border border-yellow-200 p-4 rounded shadow-sm mb-3">
                 <div class="border-l-4 border-yellow-500 pl-3">
                     <p class="font-bold text-gray-800 text-sm">${p.judul}</p>
-                    <span class="text-xs font-semibold text-blue-800 block mt-1">${p.tanggal}</span>
+                    ${tanggalRapi ? `<span class="text-xs font-semibold text-blue-800 block mt-1">${tanggalRapi}</span>` : ''}
                 </div>
             </div>
         `;
