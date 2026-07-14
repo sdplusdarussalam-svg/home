@@ -126,7 +126,7 @@ Selamat dan sukses untuk seluruh siswa-siswi Angkatan XII. Semoga langkah ke dep
     <script>
      <script>
 <script>
-// 1. DATA MENU LENGKAP & STRUKTUR 3 TINGKAT YANG BENAR
+// 1. DATA MENU LENGKAP DENGAN SUB-KATEGORI AN-NUR & JIHARKA
 const menuData = [
     {
         nama: "PROFIL",
@@ -165,7 +165,7 @@ const menuData = [
             },
             {
                 nama: "Tahsin & Tahfidz",
-                hasDoubleNested: true, // Flag untuk menandakan 3 tingkat
+                hasDeepNested: true, // Flag khusus untuk menandakan ada cabang An-Nur & Jiharka
                 categories: [
                     {
                         nama: "An-Nur",
@@ -187,8 +187,13 @@ const menuData = [
                     }
                 ]
             },
-            { nama: "Do'a Yaumiyah (On Going)", link: "#", eksternal: false },
-            { nama: "Hadits Pilihan (On Going)", link: "#", eksternal: false }
+            {
+                nama: "Do'a & Hadits",
+                items: [
+                    { nama: "Do'a Yaumiyah (On Going)", link: "#", eksternal: false },
+                    { nama: "Hadits Pilihan (On Going)", link: "#", eksternal: false }
+                ]
+            }
         ]
     },
     {
@@ -233,10 +238,9 @@ const menuData = [
     }
 ];
 
-// 2. PROSES GENERATE MENU KE HTML
+// 2. LOGIKA MERENDER MENU KE HTML
 const container = document.getElementById('menu-container');
 
-// Bersihkan container terlebih dahulu untuk menghindari penumpukan
 if (container) {
     container.innerHTML = '';
 
@@ -247,19 +251,20 @@ if (container) {
         if (item.isNested) {
             menuDiv.innerHTML = `
                 <button onclick="toggleMenu(${index})" class="w-full text-left font-bold text-gray-700 hover:text-blue-900 flex justify-between items-center py-1.5 text-xs tracking-wider uppercase transition-colors">
-                    <span>${item.nama}</span> <span id="arrow-${index}" class="text-[10px] text-gray-400 transition-transform duration-200">▼</span>
+                    <span>${item.nama}</span> 
+                    <span id="arrow-${index}" class="text-[10px] text-gray-400 transition-transform duration-200">▼</span>
                 </button>
                 <ul id="sub-${index}" class="hidden pl-3 mt-1 space-y-2 border-l border-gray-300">
                     ${item.sub.map((nestedItem, nestedIndex) => {
-                        // Jika memiliki menu 3 tingkat (Tahsin & Tahfidz)
-                        if (nestedItem.hasDoubleNested) {
+                        // JIKA TAMPILANNYA BERCABANG LAGI (Tahsin & Tahfidz -> An-Nur / Jiharka)
+                        if (nestedItem.hasDeepNested) {
                             return `
                                 <li class="space-y-1">
                                     <button onclick="toggleNestedMenu(${index}, ${nestedIndex})" class="w-full text-left font-semibold text-gray-600 hover:text-blue-800 flex justify-between items-center py-1 text-xs transition-colors">
                                         <span>• ${nestedItem.nama}</span> 
                                         <span id="nested-arrow-${index}-${nestedIndex}" class="text-[9px] text-gray-400 transition-transform duration-200">▼</span>
                                     </button>
-                                    <ul id="nested-sub-${index}-${nestedIndex}" class="hidden pl-3 space-y-2 border-l border-dashed border-gray-300">
+                                    <ul id="nested-sub-${index}-${nestedIndex}" class="hidden pl-3 space-y-1.5 border-l border-dashed border-gray-300">
                                         ${nestedItem.categories.map((cat, catIndex) => `
                                             <li class="space-y-1">
                                                 <button onclick="toggleDeepNestedMenu(${index}, ${nestedIndex}, ${catIndex})" class="w-full text-left font-medium text-gray-500 hover:text-blue-700 flex justify-between items-center py-0.5 text-[11px] transition-colors">
@@ -282,8 +287,8 @@ if (container) {
                                     </ul>
                                 </li>
                             `;
-                        // Jika menu bersarang biasa (Ibadah Yaumiyah)
-                        } else if (nestedItem.items) {
+                        // JIKA TAMPILAN STANDAR (Ibadah Yaumiyah langsung memunculkan konten)
+                        } else {
                             return `
                                 <li class="space-y-1">
                                     <button onclick="toggleNestedMenu(${index}, ${nestedIndex})" class="w-full text-left font-semibold text-gray-600 hover:text-blue-800 flex justify-between items-center py-1 text-xs transition-colors">
@@ -303,26 +308,16 @@ if (container) {
                                     </ul>
                                 </li>
                             `;
-                        // Menu biasa tanpa anak menu (Do'a Yaumiyah dkk)
-                        } else {
-                            return `
-                                <li>
-                                    <a href="${nestedItem.link}" 
-                                       ${nestedItem.eksternal ? 'target="_blank" rel="noopener noreferrer"' : ''} 
-                                       class="text-gray-600 hover:text-blue-800 text-xs block py-1 break-words transition-colors">
-                                       • ${nestedItem.nama} ${nestedItem.eksternal && nestedItem.link !== '#' ? '↗' : ''}
-                                    </a>
-                                </li>
-                            `;
                         }
                     }).join('')}
                 </ul>
             `;
         } else {
-            // Menu utama biasa (PROFIL, LAYANAN, dll.)
+            // Render untuk menu standar (PROFIL, LAYANAN, PROGRAM, dll.)
             menuDiv.innerHTML = `
                 <button onclick="toggleMenu(${index})" class="w-full text-left font-bold text-gray-700 hover:text-blue-900 flex justify-between items-center py-1.5 text-xs tracking-wider uppercase transition-colors">
-                    <span>${item.nama}</span> <span id="arrow-${index}" class="text-[10px] text-gray-400 transition-transform duration-200">▼</span>
+                    <span>${item.nama}</span> 
+                    <span id="arrow-${index}" class="text-[10px] text-gray-400 transition-transform duration-200">▼</span>
                 </button>
                 <ul id="sub-${index}" class="hidden pl-3 mt-1 space-y-1 border-l border-gray-300">
                     ${item.sub.map(sub => `
@@ -342,7 +337,7 @@ if (container) {
     });
 }
 
-// 3. FUNGSI INTERAKSI KLIK DROPDOWN
+// 3. FUNGSI KLIK DROPDOWN (TINGKAT 1, 2, DAN 3)
 function toggleMenu(index) {
     const subMenu = document.getElementById(`sub-${index}`);
     const arrow = document.getElementById(`arrow-${index}`);
@@ -370,7 +365,7 @@ function toggleDeepNestedMenu(parentIndex, nestedIndex, catIndex) {
     }
 }
 
-// 4. FUNGSI BACA SELENGKAPNYA DI ARTIKEL
+// 4. FUNGSI BACA SELENGKAPNYA BERITA
 function toggleBerita(id) {
     const lengkap = document.getElementById(`konten-lengkap-${id}`);
     const pendek = document.getElementById(`konten-pendek-${id}`);
@@ -379,13 +374,7 @@ function toggleBerita(id) {
     if (lengkap && pendek && btn) {
         lengkap.classList.toggle('hidden');
         pendek.classList.toggle('hidden');
-        
-        if (lengkap.classList.contains('hidden')) {
-            btn.innerHTML = "Baca Selengkapnya →";
-        } else {
-            btn.innerHTML = "Sembunyikan ←";
-        }
+        btn.innerHTML = lengkap.classList.contains('hidden') ? "Baca Selengkapnya →" : "Sembunyikan ←";
     }
 }
-</script>
 </script>
