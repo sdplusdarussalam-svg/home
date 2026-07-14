@@ -2,7 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Tagihan Siswa - SD Plus Darussalam</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -40,7 +43,6 @@
                     if (namaIbuDiDb === ibuInput) {
                         hasilDiv.classList.remove('hidden');
                         
-                        // Menentukan warna dan gaya teks berdasarkan status
                         let statusTeks = d.status || '-';
                         let statusWarna = statusTeks.toLowerCase() === "lunas" ? "text-green-600" : "text-red-600";
                         let statusDisplay = `<span class="font-bold ${statusWarna}">${statusTeks}</span>`;
@@ -49,22 +51,27 @@
                         if (d.status.toLowerCase() !== "lunas") {
                             infoRekening = `
                                 <hr class="my-4 border-gray-300">
-                                <p class="text-sm">Silakan transfer ke rekening berikut:</p>
-                                <p class="font-bold text-lg text-blue-900">Bank BNI: 1234567890 (a.n SD Plus Darussalam)</p>
-                                <br>
-                                <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20telah%20melakukan%20pembayaran%20untuk%20siswa%20${d.nama}%20(NISN:%20${nisn}).%20Berikut%20bukti%20transfernya." 
+                                <p class="text-xs text-gray-600 mb-2">Silakan melakukan pembayaran melalui transfer ke rekening institusi berikut:</p>
+                                <div class="bg-blue-50/90 p-3 rounded-md border border-blue-100 text-xs text-blue-900 space-y-1 font-mono mb-3">
+                                    <p><strong>BRI:</strong> 6440 0103 6276 532</p>
+                                    <p><strong>Bank Jatim:</strong> 180 2000 908</p>
+                                    <p class="font-sans text-[11px] text-gray-500 mt-1">a.n. SD PLUS DARUSSALAM</p>
+                                </div>
+                                <a href="https://wa.me/6285210100175?text=Halo%20Admin%20SDPD,%20saya%20telah%20melakukan%20pembayaran%20untuk%20siswa%20${d.nama}%20(NISN:%20${nisn}).%20Berikut%20bukti%20transfernya." 
                                    target="_blank" 
-                                   class="block w-full bg-green-600 text-white text-center p-2 rounded font-bold hover:bg-green-500">
-                                   Kirim Bukti Transfer (WhatsApp)
+                                   class="block w-full bg-green-600 text-white text-center py-2.5 rounded font-bold text-xs hover:bg-green-500 transition-colors shadow-sm">
+                                   Kirim Bukti Transfer via WhatsApp
                                 </a>
                             `;
                         }
 
                         hasilDiv.innerHTML = `
-                            <p><strong>Nama:</strong> ${d.nama || '-'}</p>
-                            <p><strong>Status:</strong> ${statusDisplay}</p>
-                            <p><strong>Keterangan:</strong> ${d.keterangan || '-'}</p>
-                            <p><strong>Jumlah:</strong> ${d.jumlah || '-'}</p>
+                            <div class="space-y-2 text-xs text-gray-700">
+                                <p class="border-b border-gray-100 pb-1"><strong class="text-gray-500 inline-block w-24">Nama Siswa</strong>: ${d.nama || '-'}</p>
+                                <p class="border-b border-gray-100 pb-1"><strong class="text-gray-500 inline-block w-24">Status</strong>: ${statusDisplay}</p>
+                                <p class="border-b border-gray-100 pb-1"><strong class="text-gray-500 inline-block w-24">Jumlah Tagihan</strong>: <span class="font-semibold text-gray-900">${d.jumlah || '-'}</span></p>
+                                <p class="pb-1"><strong class="text-gray-500 inline-block w-24">Keterangan</strong>: ${d.keterangan || '-'}</p>
+                            </div>
                             ${infoRekening}
                         `;
                     } else {
@@ -80,16 +87,50 @@
         }
     </script>
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="max-w-md mx-auto bg-white p-6 rounded shadow">
-        <h2 class="text-xl font-bold mb-4">Cek Tagihan Siswa</h2>
-        <input type="text" id="nisn-input" placeholder="Masukkan NISN" class="w-full p-2 border rounded mb-3">
-        <input type="text" id="ibu-input" placeholder="Nama Ibu Kandung" class="w-full p-2 border rounded mb-4">
-        <button onclick="cariTagihan()" class="w-full bg-blue-800 text-white p-2 rounded font-bold hover:bg-blue-700">Cari Tagihan</button>
+<body class="relative min-h-screen flex flex-col items-center justify-center p-4 bg-cover bg-center bg-no-repeat" style="background-image: url('bangunan-sekolah.jpg');">
+    
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-0"></div>
+
+    <div class="relative z-10 w-full max-w-xl bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 overflow-hidden my-4">
         
-        <div id="hasil-tagihan" class="mt-6 hidden p-4 bg-gray-50 border-l-4 border-blue-800 rounded"></div>
-        
-        <a href="index.html" class="block text-center mt-6 text-blue-600 underline">← Kembali ke Beranda</a>
+        <div class="bg-blue-900 text-white p-5 text-center border-b-4 border-yellow-500">
+            <h1 class="font-bold text-base md:text-lg tracking-wide uppercase">SD Plus Darussalam</h1>
+            <p class="text-[10px] text-gray-200 tracking-wider uppercase mt-0.5">Sistem Verifikasi Pembayaran Syahriah</p>
+        </div>
+
+        <div class="p-6 md:p-8 space-y-6">
+            <div>
+                <h2 class="text-lg font-bold text-gray-800 text-center">Cek Tagihan Siswa</h2>
+                <p class="text-xs text-gray-500 text-center mt-1">
+                    Silakan masukkan kombinasi 10 digit NISN aktif siswa beserta Nama Ibu Kandung sesuai data Dapodik sekolah.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 uppercase mb-1 tracking-wider">Nomor NISN Siswa</label>
+                    <input type="text" id="nisn-input" placeholder="Contoh: 0123456789" class="w-full px-3 py-2 border border-gray-300 bg-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-900 font-mono tracking-widest">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 uppercase mb-1 tracking-wider">Nama Ibu Kandung</label>
+                    <input type="text" id="ibu-input" placeholder="Masukkan nama lengkap ibu kandung" class="w-full px-3 py-2 border border-gray-300 bg-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-900 uppercase">
+                </div>
+                
+                <button onclick="cariTagihan()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg text-xs transition-colors shadow-sm tracking-wide uppercase pt-3">
+                    Mulai Pencarian Data
+                </button>
+            </div>
+
+            <div id="hasil-tagihan" class="bg-white p-5 rounded-lg border-l-4 border-blue-900 border-t border-r border-b border-gray-200 hidden shadow-md transition-all">
+                </div>
+
+            <div class="text-center pt-2 border-t border-gray-100">
+                <a href="index.html" class="text-xs text-blue-900 hover:text-blue-700 font-bold inline-flex items-center gap-1 transition-colors">
+                    ← Kembali ke Beranda Utama
+                </a>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
